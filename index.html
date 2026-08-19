@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🛒 Smart Price Compare</title>
+    <meta name="description" content="Secure The Best Deals by Smartly Comparing Prices Of deals Globally">
+    <style>
+        /* CSS STYLING: Mobile-first, clean, and fast loading */
+        :root {
+            --primary: #2563eb;
+            --success: #22c55e;
+            --background: #f8fafc;
+            --card-bg: #ffffff;
+            --text: #1e293b;
+            --text-light: #64748b;
+            --border: #e2e8f0;
+        }
+
+        * {
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--background);
+            color: var(--text);
+            padding: 16px;
+            margin: auto;
+        }
+
+        .container {
+            display: flex;
+            flex-direction:column;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items:center;
+            gap: 10px;
+        }
+        .app-layout-flex ,.seo-content{
+            min-width: 300px;
+            max-width: 450px;
+        }
+        .seo-content{
+            width: 100%;
+            max-width: 650px;
+            padding: 30px 10px;
+            background-color: transparent; 
+            border: none; 
+            box-shadow: none;
+        }
+        .seo-content h2 {
+            font-size: 1.5rem !important;
+            font-weight: 700;
+            letter-spacing: -0.025em;
+            color: var(--text);
+            line-height: 1.3;
+            margin-bottom: 16px;
+        }
+
+        .seo-content h3 {
+            font-size: 1.15rem !important;
+            font-weight: 600;
+            color: var(--text);
+            margin-top: 28px;
+            margin-bottom: 8px;
+        }
+
+        .seo-content p {
+            font-size: 0.95rem;
+            color: var(--text-light); /* Soft slate blue-gray text minimizes visual fatigue */
+            line-height: 1.65;
+            margin-bottom: 16px;
+        }
+
+        .seo-content ul {
+            margin-left: 0;
+            padding-left: 20px;
+            margin-bottom: 20px;
+        }
+
+        .seo-content li {
+            font-size: 0.95rem;
+            color: var(--text-light);
+            margin-bottom: 10px;
+            line-height: 1.5;
+        }
+
+        .seo-content strong {
+            color: var(--text); /* Highlights key phrases without using bright neon colors */
+        }
+        header ,footer{
+            text-align: center;
+            margin: 5px;
+            padding: 2px;
+        }
+        footer{
+            background-color: #cbd5e1;
+            width: 100%;
+            padding: 20px;
+        }
+        a{
+            margin: 10px 20px;
+        }
+
+        h1 {
+            font-size: 1.5rem;
+            color: var(--primary);
+            margin-bottom: 4px;
+        }
+
+        p.subtitle {
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+
+        .comparison-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+       /* .item-card {
+            background: var(--card-bg);
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
+            transition: all 0.2s ease;
+            position: relative;
+        }*/
+            .item-card {
+                background: var(--card-bg);
+                background: linear-gradient(180deg, #ffffff 0%, #f0f4ff 100%);
+                border-color: #dbeafe;
+                border: 1px solid var(--border);
+                border-radius: 16px;
+                padding: 24px;
+                transition: all 0.25s ease;
+                position: relative;
+                box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.03), 0 2px 4px -1px rgba(0, 0, 0, 0.02);
+            }
+            .item-card input:focus,.item-card select:focus{
+                border-color: #8b5cf6;
+                box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.15);
+            }
+        .item-card.cheaper {
+            border-color: var(--success);
+            background: #f0fdf4;
+            box-shadow: 0 4px 12px rgba(34, 197, 94, 0.1);
+        }
+
+        .badge {
+            display: none;
+            position: absolute;
+            top: -10px;
+            right: 16px;
+            background: var(--success);
+            color: white;
+            font-size: 0.75rem;
+            font-weight: bold;
+            padding: 2px 8px;
+            border-radius: 20px;
+            text-transform: uppercase;
+        }
+
+        .item-card.cheaper .badge {
+            display: block;
+        }
+
+        h2 {
+            font-size: 1.1rem;
+            margin-bottom: 24px;}
+
+        .input-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .input-field {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        label {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text-light);
+        }
+
+        input, select {
+            width: 100%;
+            padding: 10px;
+            font-size: 1rem;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            outline: none;
+            background: var(--background);
+        }
+        select {
+            appearance: none;
+            -webkit-appearance: none;
+            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://w3.org' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'></polyline></svg>");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            background-size: 16px;
+            padding-right: 40px !important; /* Keeps option labels clear of the native arrow */
+        }
+
+        input:focus, select:focus {
+            border-color: var(--primary);
+            background: white;
+        }
+
+        .result-box {
+            margin-top: 8px;
+            padding-top: 12px;
+            border-top: 1px dashed var(--border);
+            font-size: 0.95rem;
+        }
+
+        .unit-price {
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        .savings-banner {
+            background: #eff6ff;
+            border: 1px solid #bfdbfe;
+            color: var(--primary);
+            padding: 12px;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: 600;
+            margin-top: 16px;
+            display: none;
+            font-size: 0.95rem;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            white-space: normal;
+            height: auto;
+            line-height: 1.4;
+        }
+
+        .reset-btn {
+            width: 100%;
+            background: #e2e8f0;
+            border: none;
+            color: var(--text);
+            padding: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 8px;
+            margin-top: 16px;
+            cursor: pointer;
+        }
+
+        .reset-btn:hover {
+            background: #cbd5e1;}
+
+/* Desktop View Override */
+        @media (min-width: 900px) {
+        .container {
+            width:100%;
+            display: flex;
+            flex-direction:row;
+            justify-content: center;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap:30px;
+        }
+        .seo-content {
+            max-width: 520px;
+            padding: 10px 0 10px 40px; 
+            border-left: 1px solid var(--border);
+        }
+        .item-card {
+            padding: 16px; /* Free up critical container real estate */
+        }
+     }
+    </style>
+</head>
+<body>
+    <header><h1>🛒 Smart Price Compare</h1>
+        <p class="subtitle">Find the real deal instantly in any store globally</p>
+    </header>
+    <div class="container">
+        <div class="app-layout-flex">
+            <div class="comparison-grid">
+        	    <div class="item-card" id="cardA">
+            		<div class="badge">Better Value</div>
+                    <h2>Pack / Item A</h2>
+            		<div class="input-group">
+                		<div class="input-field"><label>Price (Any Currency)</label>
+                    	    <input type="number" id="priceA" placeholder="e.g. 150" inputmode="decimal" oninput="calculate()"></div>
+                		<div class="input-field"><label>Size / Weight</label>
+                   		 <input type="number" id="sizeA" placeholder="e.g. 400" inputmode="decimal" oninput="calculate()"></div>
+            		</div>
+                    <div class="input-field">
+                        <label>Unit Type</label>
+                        <select id="unitA" onchange="calculate()">
+                        <option value="1">Grams (g)</option>
+                        <option value="1000">Kilograms (kg)</option>
+                        <option value="1">Milliliters (ml)</option>
+                        <option value="1000">Liters (L)</option>
+                        <option value="1">Units / Pieces</option>
+                        </select></div>
+                    <div class="result-box">Unit Price: <span class="unit-price" id="outputA">--</span></div>
+                </div>
+
+                <div class="item-card" id="cardB">
+                    <div class="badge">Better Value</div>
+                    <h2>Pack / Item B</h2>
+                    <div class="input-group">
+                        <div class="input-field">
+                            <label>Price (Any Currency)</label>
+                            <input type="number" id="priceB" placeholder="e.g. 220" inputmode="decimal" oninput="calculate()">
+                        </div>
+                        <div class="input-field">
+                            <label>Size / Weight</label>
+                            <input type="number" id="sizeB" placeholder="e.g. 650" inputmode="decimal" oninput="calculate()">
+                        </div>
+                    </div>
+                    <div class="input-field">
+                        <label>Unit Type</label>
+                        <select id="unitB" onchange="calculate()">
+                            <option value="1">Grams (g)</option>
+                            <option value="1000">Kilograms (kg)</option>
+                            <option value="1">Milliliters (ml)</option>
+                            <option value="1000">Liters (L)</option>
+                            <option value="1">Units / Pieces</option>
+                        </select>
+                    </div>
+                    <div class="result-box">
+                        Unit Price: <span class="unit-price" id="outputB">--</span>
+                    </div>
+                </div>
+            </div>
+            <div class="savings-banner" id="savingsText"></div>
+            <button class="reset-btn" onclick="resetForm()">Clear All</button>
+        </div>
+ 
+     <section class="seo-content">
+  <h2 style="font-size: 20px; color: #1a73e8; margin-bottom: 12px;">Smart Grocery Shopping in India:How to Use a Unit Price Calculator to Save Money</h2>
+  
+  <p style="margin-bottom: 16px;">
+    In India, navigating the grocery aisles can be confusing due to deceptive packaging. Whether you are shopping online via apps like Blinkit, Zepto, and BigBasket, or browsing the shelves at offline retail giants like D-Mart and Reliance Smart, brands often use clever marketing tactics to hide price hikes. This strategy, known as <strong>shrinkflation</strong>, involves reducing the product quantity while keeping the price and box size exactly the same.
+  </p>
+
+  <h3 style="font-size: 16px; color: #333; margin-bottom: 8px;">Why Bigger Packs Aren't Always Cheaper</h3>
+  <p style="margin-bottom: 16px;">
+    Most Indian shoppers assume that buying bulk or family-sized packs automatically guarantees a discount. However, a quick calculation often reveals the opposite. For instance, a 250g pack of tea leaves or paneer at your local Kirana store might actually cost less per gram than a 1kg mega pack from a major brand. Without calculating the exact unit cost, it is nearly impossible to spot these pricing anomalies.
+  </p>
+
+  <h3 style="font-size: 16px; color: #333; margin-bottom: 8px;">How Our Price Comparison Tool Works</h3>
+  <p style="margin-bottom: 16px;">
+    Our free online <strong>Smart Price Compare</strong> utility eliminates the guesswork from your monthly budgeting. By calculating the cost per unit (such as price per gram, milliliter, or item), this tool helps you uncover true value across different sizes and competing brands. Here is how to use it during your next shopping trip:
+  </p>
+
+  <ul style="margin-left: 20px; margin-bottom: 16px; padding-left: 0;">
+    <li style="margin-bottom: 8px;"><strong>Step 1:</strong> Enter the price and the weight/volume of Pack A (e.g., ₹150 for 400g of laundry detergent).</li>
+    <li style="margin-bottom: 8px;"><strong>Step 2:</strong> Enter the price and weight/volume of Pack B (e.g., ₹220 for 650g of the same product).</li>
+    <li style="margin-bottom: 8px;"><strong>Step 3:</strong> Review the automatically generated unit price to see exactly which option offers the best value per gram.</li>
+  </ul>
+
+  <p style="margin-bottom: 16px;">
+    By running a quick mathematical check before checking out your cart, you can protect your monthly household budget from hidden retail markups.</p><p> <strong>Bookmark this simple,utility tool on your smartphone</strong> to ensure you always secure the absolute best deals in the Indian retail market.
+  </p>
+
+</section>
+</div>
+<footer>
+<a href="privacy.html">Privacy Policy</a>
+<a href="mailto:rvofficialemail@gmail.com">Contact Us</a>
+</footer>
+<script>
+    // JAVASCRIPT LOGIC: Calculates unit math entirely on the user's phone browser
+    function calculate() {
+        // Elements
+        const priceA = parseFloat(document.getElementById('priceA').value);
+        const sizeA = parseFloat(document.getElementById('sizeA').value);
+        const unitA = parseFloat(document.getElementById('unitA').value);
+
+        const priceB = parseFloat(document.getElementById('priceB').value);
+        const sizeB = parseFloat(document.getElementById('sizeB').value);
+        const unitB = parseFloat(document.getElementById('unitB').value);
+
+        const cardA = document.getElementById('cardA');
+        const cardB = document.getElementById('cardB');
+        const savingsText = document.getElementById('savingsText');
+
+        // Reset display states
+        cardA.classList.remove('cheaper');
+        cardB.classList.remove('cheaper');
+        savingsText.style.display = 'none';
+        document.getElementById('outputA').innerText = '--';
+        document.getElementById('outputB').innerText = '--';
+
+        let basePriceA = 0;
+        let basePriceB = 0;
+
+        // Process Item A if valid inputs exist
+        if (priceA && sizeA && sizeA > 0) {
+            // Standardize everything to a base of 100 units (e.g. per 100g, 100ml, 100 pieces)
+            basePriceA = (priceA / (sizeA * unitA)) * 100;
+            document.getElementById('outputA').innerText = basePriceA.toFixed(4) + " per 100";
+        }
+
+        // Process Item B if valid inputs exist
+        if (priceB && sizeB && sizeB > 0) {
+            basePriceB = (priceB / (sizeB * unitB)) * 100;
+            document.getElementById('outputB').innerText = basePriceB.toFixed(4) + " per 100";
+        }
+
+        // Compare values if both items are fully entered
+        if (basePriceA > 0 && basePriceB > 0) {
+            if (basePriceA < basePriceB) {
+                cardA.classList.add('cheaper');
+                const pct = ((basePriceB - basePriceA) / basePriceB) * 100;
+                savingsText.innerText = "🎉 Item A saves you " + pct.toFixed(1) + "% relative to Item B!";
+                savingsText.style.display = 'block';
+            } else if (basePriceB < basePriceA) {
+                cardB.classList.add('cheaper');
+                const pct = ((basePriceA - basePriceB) / basePriceA) * 100;
+                savingsText.innerText = "🎉 Item B saves you " + pct.toFixed(1) + "% relative to Item A!";
+                savingsText.style.display = 'block';
+            } else {
+            savingsText.innerText = "⚖️ Both items are exactly the same value!";
+            savingsText.style.display = 'block';}
+            }
+            }
+      function resetForm()  {
+            document.getElementById('priceA').value = '';
+            document.getElementById('sizeA').value = '';
+            document.getElementById('priceB').value = '';
+            document.getElementById('sizeB').value = '';
+            calculate();
+            }
+            </script>
+</body>
+</html>
