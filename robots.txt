@@ -1,0 +1,12 @@
+# Allow all search engine bots to crawl the website
+User-agent: *
+Allow: /
+
+# Block bots from crawling private or system folders
+Disallow: /admin/
+Disallow: /config/
+Disallow: /private/
+Disallow: /tmp/
+
+# Link to your website's sitemap (Replace with your actual URL)
+Sitemap: https://smartpricecompare.online/
