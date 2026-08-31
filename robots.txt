@@ -5,4 +5,4 @@ Disallow: /config/
 Disallow: /private/
 Disallow: /tmp/
 
-Sitemap: https://smartpricecompare.online/
+Sitemap: https://www.smartpricecompare.online/
