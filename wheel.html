@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spin Wheel - Elimination & Random Picker</title>
+    <link rel="canonical" href="https://smartpricecompare.online" />
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3926058636910344"
+     crossorigin="anonymous"></script>
+   
+    <style>
+        *{
+            box-sizing: border-box;
+        }
+        body{ 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f4f7f6;
+            width:100%; 
+            margin:0;
+            padding:5px; 
+            text-align: center; 
+            color: #333; }
+        header{
+            width:100%;
+            text-align: center;
+        }
+
+        .container {
+            margin:auto;
+            padding:5px;
+            width:100%;
+            display:flex;
+            flex-direction: column; 
+            justify-content: center; 
+            align-items: center;
+            gap:10px; 
+            margin-top: 20px; }
+
+        .facts{ 
+            max-width:65ch;
+            background: white; 
+            padding: 20px; 
+            border-radius: 12px; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);}
+
+        .setup-box { 
+            min-width:350px;
+            max-width: 450px;
+            background: white;
+            padding:10px; 
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            display: flex; 
+            flex-direction: column;
+            text-align: left; }
+
+        .game-box { 
+             background: white;
+             padding:2px; 
+             border-radius:12px;
+             box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+             display:flex; 
+             flex-direction: column;
+             align-items: center; }
+
+        textarea {
+            width:100%;
+            height: 150px; 
+            padding: 10px; 
+            border: 2px solid #ddd; 
+            border-radius: 8px; 
+            font-size: 14px; 
+            margin-bottom: 15px; }
+
+        .radio-group { 
+            margin-bottom: 15px; 
+            display: flex; 
+            flex-direction: column; 
+            gap: 8px; }
+
+        .radio-label { 
+            display: flex; 
+            align-items: center; 
+            gap: 8px; 
+            font-weight: 500; 
+            cursor: pointer; }
+
+        button { 
+            background: #2e7d32; 
+            color: white; 
+            border: none; 
+            padding: 12px; 
+            font-size: 16px; 
+            font-weight: bold; 
+            border-radius: 8px; 
+            cursor: pointer; 
+            transition: 0.2s; 
+            margin-bottom: 10px; 
+            width: 100%; 
+            box-sizing: border-box; }
+
+        button:hover { background: #1b5e20; }
+
+        #spinBtn { background: #d32f2f; font-size: 18px; padding: 15px 30px; display: none; width: auto; }
+
+        #spinBtn:hover { background: #c62828; }
+
+        .wheel-wrapper { position: relative; width: 340px; height: 340px; }
+
+         canvas{height: 300px;}
+
+        .pointer { position: absolute; top: -10px; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 15px solid transparent; border-right: 15px solid transparent; border-top: 30px solid #d32f2f; z-index: 10; }
+
+        #announcement { font-size: 20px; font-weight: bold; color: #2e7d32; margin-top: 15px; min-height: 30px; }
+        
+        @media (min-width:900px) {
+            .container { width:100%;flex-direction:row; flex-wrap:wrap;justify-content: center; }            
+    </style>
+</head>
+<body>
+    <header>
+        <a href="index.html" style="width:150px; border: 1px solid white;padding:10px 20px;border-radius: 10px;background-color: skyblue;text-decoration: none;"> Home</a>
+    <h1>🎮 Decision Spin Wheel</h1>
+    <p>Setup your custom list, choose your gameplay mode, and let the pointer decide!</p>
+    </header>
+    <div class="container">
+        <!-- Control Configurations Panel -->
+        <div class="setup-box">
+            <h3>1. Configure Roster</h3>
+            <textarea id="namesInput" placeholder="Enter names (one per line)...&#10;Option 1&#10;Option 2&#10;Option 3"></textarea>
+            
+            <h3>2. Game Mode</h3>
+            <div class="radio-group">
+                <label class="radio-label">
+                    <input type="radio" name="gameMode" value="eliminate" checked> ❌ Elimination Mode
+                </label>
+                <label class="radio-label">
+                    <input type="radio" name="gameMode" value="pick"> 🎯 Random Picker Mode
+                </label>
+            </div>
+            
+            <button onclick="loadWheel()">Generate Custom Wheel</button>
+        </div>
+
+        <!-- Render Target Dashboard -->
+        <div class="game-box">
+            <div class="wheel-wrapper">
+                <div class="pointer"></div>
+                <canvas id="wheelCanvas" width="360" height="360"></canvas>
+            </div>
+            <button id="spinBtn" onclick="spinWheel()">SPIN THE WHEEL</button>
+            <div id="announcement"></div>
+        </div>
+        <div class="facts">
+        <h2>The Ultimate Tool for Classrooms, Parties, and Daily Choices</h2>
+		<p> Making random choices can sometimes feel stressful, whether you are a teacher deciding on student participation or a group of friends picking a dinner spot. Our free, responsive <strong>Decision Spin Wheel</strong> takes the friction out of planning. It provides a lightning-fast, secure environment to process entries instantly.</p>
+
+		<h3>Perfect for US Classroom Management</h3>
+		<p>Teachers across the United States frequently use digital name pickers to keep their elementary, middle, or high school classrooms engaged. By switching your dashboard to <strong>Elimination Mode</strong>, you can easily pick a student speaker, remove their slice automatically, and keep spinning until every child gets a turn. It ensures a fun, fair, and completely unbiased rotation method for active lesson plans.</p>
+
+		<h3>Streamlined Privacy: No Logins, No Trackers</h3>
+		<p>Unlike heavy, cluttered decision platforms, this utility tool respects your data safety. It processes all array variables completely on the client side inside your native web browser window. We never save, log, or transmit the names or lists you input to external database servers. It is optimized to run smoothly on tablets, desktop monitors, or mobile viewports even inside basements with low network bars.</p></div>
+    </div>
+
+<script>
+    let names = [];
+    let startAngle = 0;
+    let arc = 0;
+    let spinTimeout = null;
+    let spinAngleStart = 10;
+    let spinTime = 0;
+    let spinTimeTotal = 0;
+    let ctx;
+    const colors = ["#ff7675", "#74b9ff", "#55efc4", "#ffeaa7", "#a29bfe", "#fd79a8", "#fab1a0", "#00cec9"];
+
+    function drawWheel() {
+        const canvas = document.getElementById("wheelCanvas");
+        if (!canvas.getContext) return;
+        ctx = canvas.getContext("2d");
+        ctx.clearRect(0,0,360,360);
+        
+        if (names.length === 0) return;
+
+        const outsideRadius = 170;
+        const textRadius = 110;
+        const insideRadius = 0;
+
+        ctx.strokeStyle = "#ffffff";
+        ctx.lineWidth = 2;
+        ctx.font = 'bold 13px sans-serif';
+
+        for(let i = 0; i < names.length; i++) {
+            let angle = startAngle + i * arc;
+            ctx.fillStyle = colors[i % colors.length];
+
+            ctx.beginPath();
+            ctx.arc(180, 180, outsideRadius, angle, angle + arc, false);
+            ctx.arc(180, 180, insideRadius, angle + arc, angle, true);
+            ctx.stroke();
+            ctx.fill();
+
+            ctx.save();
+            ctx.fillStyle = "#333333";
+            ctx.translate(180 + Math.cos(angle + arc / 2) * textRadius, 
+                          180 + Math.sin(angle + arc / 2) * textRadius);
+            ctx.rotate(angle + arc / 2 + Math.PI / 2);
+            let text = names[i];
+            ctx.fillText(text, -ctx.measureText(text).width / 2, 0);
+            ctx.restore();
+        }
+    }
+
+    function loadWheel() {
+        const input = document.getElementById("namesInput").value;
+        names = input.split('\n').map(name => name.trim()).filter(name => name.length > 0);
+        
+        if(names.length < 2) {
+            alert("Please enter at least 2 entries!");
+            return;
+        }
+
+        arc = (2 * Math.PI) / names.length;
+        document.getElementById("spinBtn").style.display = "block";
+        document.getElementById("announcement").innerText = "Roster locked. Click SPIN!";
+        drawWheel();
+    }
+
+    function spinWheel() {
+        if (names.length < 1) return;
+        document.getElementById("spinBtn").disabled = true;
+        document.getElementById("announcement").innerText = "🌀 Calculating result...";
+        spinAngleStart = Math.random() * 10 + 10;
+        spinTime = 0;
+        spinTimeTotal = Math.random() * 3000 + 4000;
+        rotateWheel();
+    }
+
+    function rotateWheel() {
+        spinTime += 30;
+        if(spinTime >= spinTimeTotal) {
+            stopRotateWheel();
+            return;
+        }
+        let spinAngle = spinAngleStart - easeOut(spinTime, 0, spinAngleStart, spinTimeTotal);
+        startAngle += (spinAngle * Math.PI / 180);
+        drawWheel();
+        spinTimeout = setTimeout(rotateWheel, 30);
+    }
+
+    function stopRotateWheel() {
+        clearTimeout(spinTimeout);
+        let degrees = startAngle * 180 / Math.PI + 90;
+        let ardegrees = arc * 180 / Math.PI;
+        let index = Math.floor((360 - (degrees % 360)) / ardegrees);
+        if (index < 0) index = names.length + index;
+        
+        let selected = names[index];
+        const mode = document.querySelector('input[name="gameMode"]:checked').value;
+        
+        if (mode === "eliminate") {
+            names.splice(index, 1);
+            if (names.length === 1) {
+                 document.getElementById("announcement").innerText = "🏆 WINNER: " + names[0] + "! 👑";
+		 document.getElementById("spinBtn").innerHTML = "🔄 PLAY AGAIN";
+		 document.getElementById("spinBtn").setAttribute("onclick", "resetAndReloadWheel()");
+		 document.getElementById("spinBtn").style.background = "#2e7d32";
+		 document.getElementById("spinBtn").disabled = false;
+            } else {
+                document.getElementById("announcement").innerText = "❌ Eliminated: " + selected + "!";
+                arc = (2 * Math.PI) / names.length;
+                setTimeout(() => {
+                    drawWheel();
+                    document.getElementById("spinBtn").disabled = false;
+                }, 1500);
+            }
+        } else {
+            // Picking Mode logic loops here
+            document.getElementById("announcement").innerText = "🎯 Selected: " + selected + "!";
+            document.getElementById("spinBtn").disabled = false;
+        }
+    }
+
+    function easeOut(t, b, c, d) {
+        let ts = (t /= d) * t;
+        let tc = ts * t;
+        return b + c * (tc + -3 * ts + 3 * t);
+    }
+    
+    function resetAndReloadWheel() {
+    document.getElementById("spinBtn").innerHTML = "SPIN THE WHEEL";
+    document.getElementById("spinBtn").setAttribute("onclick", "spinWheel()");
+    document.getElementById("spinBtn").style.background = "#d32f2f";
+    
+    loadWheel();
+}
+</script>
+</body>
+</html>
