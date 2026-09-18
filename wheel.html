@@ -175,7 +175,7 @@
     let ctx;
     const colors = ["#ff7675", "#74b9ff", "#55efc4", "#ffeaa7", "#a29bfe", "#fd79a8", "#fab1a0", "#00cec9"];
 
-    function drawWheel() {
+   function drawWheel() {
         const canvas = document.getElementById("wheelCanvas");
         if (!canvas.getContext) return;
         ctx = canvas.getContext("2d");
@@ -184,7 +184,7 @@
         if (names.length === 0) return;
 
         const outsideRadius = 170;
-        const textRadius = 110;
+        const textRadius = 150;
         const insideRadius = 0;
 
         ctx.strokeStyle = "#ffffff";
@@ -203,11 +203,12 @@
 
             ctx.save();
             ctx.fillStyle = "#333333";
-            ctx.translate(180 + Math.cos(angle + arc / 2) * textRadius, 
-                          180 + Math.sin(angle + arc / 2) * textRadius);
-            ctx.rotate(angle + arc / 2 + Math.PI / 2);
+            ctx.translate(180,180);
+            ctx.rotate(angle + arc / 2);
+            ctx.textAlign = "right";
+            ctx.textBaseline = "middle"; 
             let text = names[i];
-            ctx.fillText(text, -ctx.measureText(text).width / 2, 0);
+            ctx.fillText(text,textRadius, 0);
             ctx.restore();
         }
     }
