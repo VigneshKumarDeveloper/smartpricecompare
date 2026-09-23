@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>US QuickCalc – Easy Paycheck, Tip, Sales Tax & Gas Calculator</title>
+  <meta name="description" content="Simple everyday US calculator for hourly paycheck take-home pay, restaurant tips, state sales tax, and gas trip costs." />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="container header-container">
+      <div class="logo">
+        <div class="logo-icon">$</div>
+        <span class="logo-text">US QuickCalc</span>
+      </div>
+      <nav class="nav-tabs" id="navTabs">
+        <button class="tab-btn active" data-tab="paycheck">💵 Paycheck</button>
+        <button class="tab-btn" data-tab="tip">🍽️ Tip & Split</button>
+        <button class="tab-btn" data-tab="salestax">🏷️ Sales Tax</button>
+        <button class="tab-btn" data-tab="gas">⛽ Gas Trip</button>
+      </nav>
+      <div class="header-badge">100% Free · No Sign-up</div>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="container main-content">
+    
+    <!-- 1. Paycheck Calculator -->
+    <section id="tab-paycheck" class="tab-pane active">
+      <div class="section-title">
+        <h1>US Paycheck & Take-Home Calculator</h1>
+        <p>Find out exactly how much cash you take home after US federal, state, and FICA taxes.</p>
+      </div>
+
+      <div class="mode-toggle">
+        <button class="mode-btn active" id="payModeHourly">Hourly Wage ($/hr)</button>
+        <button class="mode-btn" id="payModeSalary">Annual Salary ($/year)</button>
+      </div>
+
+      <div class="calc-grid">
+        <!-- Input Form -->
+        <div class="card form-card">
+          <h3>Your Pay Details</h3>
+
+          <div id="hourlyInputs">
+            <div class="form-group">
+              <label>Hourly Pay Rate ($)</label>
+              <div class="input-prefix-wrapper">
+                <span class="prefix">$</span>
+                <input type="number" id="hourlyWage" value="25" min="7.25" step="0.5" />
+              </div>
+              <div class="pill-group">
+                <button class="pill-btn" onclick="setWage(18)">$18/hr</button>
+                <button class="pill-btn" onclick="setWage(22)">$22/hr</button>
+                <button class="pill-btn active" onclick="setWage(25)">$25/hr</button>
+                <button class="pill-btn" onclick="setWage(30)">$30/hr</button>
+                <button class="pill-btn" onclick="setWage(40)">$40/hr</button>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Hours Worked Per Week</label>
+              <input type="number" id="hoursPerWeek" value="40" min="1" max="100" />
+              <div class="pill-group">
+                <button class="pill-btn" onclick="setHours(20)">20 hrs</button>
+                <button class="pill-btn" onclick="setHours(30)">30 hrs</button>
+                <button class="pill-btn active" onclick="setHours(40)">40 hrs</button>
+                <button class="pill-btn" onclick="setHours(45)">45 hrs (OT)</button>
+                <button class="pill-btn" onclick="setHours(50)">50 hrs (OT)</button>
+              </div>
+            </div>
+          </div>
+
+          <div id="salaryInputs" class="hidden">
+            <div class="form-group">
+              <label>Annual Salary ($)</label>
+              <div class="input-prefix-wrapper">
+                <span class="prefix">$</span>
+                <input type="number" id="annualSalary" value="52000" step="1000" />
+              </div>
+              <div class="pill-group">
+                <button class="pill-btn" onclick="setSalary(45000)">$45k</button>
+                <button class="pill-btn active" onclick="setSalary(52000)">$52k</button>
+                <button class="pill-btn" onclick="setSalary(65000)">$65k</button>
+                <button class="pill-btn" onclick="setSalary(85000)">$85k</button>
+                <button class="pill-btn" onclick="setSalary(110000)">$110k</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Your State (For State Income Tax)</label>
+            <select id="paycheckState"></select>
+          </div>
+        </div>
+
+        <!-- Result Box -->
+        <div class="card result-card">
+          <div class="result-header">
+            <span class="badge-title">Estimated Net Paycheck</span>
+            <button class="copy-btn" id="copyPaycheckBtn">Copy Summary</button>
+          </div>
+
+          <div class="headline-box">
+            <span class="headline-label">Biweekly Take-Home (Every 2 Weeks):</span>
+            <div class="headline-val" id="resBiweekly">$0.00</div>
+            <span class="headline-sub">Deposited into your bank account every payday.</span>
+          </div>
+
+          <div class="mini-grid">
+            <div class="mini-card">
+              <span class="mini-label">Weekly:</span>
+              <span class="mini-val" id="resWeekly">$0.00</span>
+            </div>
+            <div class="mini-card">
+              <span class="mini-label">Monthly:</span>
+              <span class="mini-val" id="resMonthly">$0.00</span>
+            </div>
+          </div>
+
+          <div class="breakdown-list">
+            <div class="breakdown-row"><span>Gross Annual:</span><span id="resGross">$0</span></div>
+            <div class="breakdown-row sub"><span>Federal Income Tax:</span><span id="resFed" class="deduct">-$0</span></div>
+            <div class="breakdown-row sub"><span>Social Security (6.2%):</span><span id="resSocSec" class="deduct">-$0</span></div>
+            <div class="breakdown-row sub"><span>Medicare (1.45%):</span><span id="resMedicare" class="deduct">-$0</span></div>
+            <div class="breakdown-row sub"><span>State Income Tax:</span><span id="resState" class="deduct">-$0</span></div>
+            <div class="breakdown-row total"><span>Net Annual Pay:</span><span id="resNetAnnual">$0 / year</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. Tip & Split Calculator -->
+    <section id="tab-tip" class="tab-pane">
+      <div class="section-title">
+        <h1>US Restaurant Tip & Bill Splitter</h1>
+        <p>Fast, friendly tipping for dining out, delivery, and group checks.</p>
+      </div>
+
+      <div class="calc-grid">
+        <div class="card form-card">
+          <div class="form-group">
+            <label>Bill Amount (Before Tip)</label>
+            <div class="input-prefix-wrapper">
+              <span class="prefix">$</span>
+              <input type="number" id="tipBill" value="65.00" min="0" step="0.01" />
+            </div>
+            <div class="pill-group">
+              <button class="pill-btn" onclick="setBill(25)">$25</button>
+              <button class="pill-btn" onclick="setBill(45)">$45</button>
+              <button class="pill-btn active" onclick="setBill(65)">$65</button>
+              <button class="pill-btn" onclick="setBill(95)">$95</button>
+              <button class="pill-btn" onclick="setBill(130)">$130</button>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Tip Percentage</label>
+            <div class="btn-grid-4">
+              <button class="tip-rate-btn" onclick="setTip(15)">15%</button>
+              <button class="tip-rate-btn" onclick="setTip(18)">18%</button>
+              <button class="tip-rate-btn active" onclick="setTip(20)">20%</button>
+              <button class="tip-rate-btn" onclick="setTip(25)">25%</button>
+            </div>
+            <div class="inline-input">
+              <span>Custom Tip:</span>
+              <input type="number" id="tipPercent" value="20" min="0" max="100" />
+              <span>%</span>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Split Between People: <strong id="splitLabel">2 people</strong></label>
+            <div class="btn-grid-6">
+              <button class="split-btn" onclick="setSplit(1)">1</button>
+              <button class="split-btn active" onclick="setSplit(2)">2</button>
+              <button class="split-btn" onclick="setSplit(3)">3</button>
+              <button class="split-btn" onclick="setSplit(4)">4</button>
+              <button class="split-btn" onclick="setSplit(5)">5</button>
+              <button class="split-btn" onclick="setSplit(6)">6</button>
+            </div>
+          </div>
+
+          <div class="checkbox-row">
+            <label><input type="checkbox" id="tipRoundUp" /> Round up total to nearest dollar</label>
+          </div>
+        </div>
+
+        <div class="card result-card">
+          <div class="result-header">
+            <span class="badge-title">Payment Summary</span>
+            <button class="copy-btn" id="copyTipBtn">Copy for Venmo</button>
+          </div>
+
+          <div class="headline-box">
+            <span class="headline-label" id="tipHeadlineLabel">Each Person Pays:</span>
+            <div class="headline-val" id="resTipEach">$0.00</div>
+          </div>
+
+          <div class="breakdown-list">
+            <div class="breakdown-row"><span>Original Bill:</span><span id="resTipBill">$0.00</span></div>
+            <div class="breakdown-row"><span>Tip Amount:</span><span id="resTipAmount" class="highlight">+$0.00</span></div>
+            <div class="breakdown-row total"><span>Grand Total:</span><span id="resTipTotal">$0.00</span></div>
+          </div>
+
+          <div class="info-note">
+            <strong>US Tipping Guide:</strong> 18%–20% is the standard customary tip for table dining across the USA.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. Sales Tax Calculator -->
+    <section id="tab-salestax" class="tab-pane">
+      <div class="section-title">
+        <h1>US State Sales Tax Calculator</h1>
+        <p>In the US, price tags don't include sales tax. Calculate the exact final amount at the register.</p>
+      </div>
+
+      <div class="calc-grid">
+        <div class="card form-card">
+          <div class="form-group">
+            <label>Item Price on Tag ($)</label>
+            <div class="input-prefix-wrapper">
+              <span class="prefix">$</span>
+              <input type="number" id="taxPrice" value="49.99" min="0" step="0.01" />
+            </div>
+            <div class="pill-group">
+              <button class="pill-btn" onclick="setPrice(19.99)">$19.99</button>
+              <button class="pill-btn active" onclick="setPrice(49.99)">$49.99</button>
+              <button class="pill-btn" onclick="setPrice(99.99)">$99.99</button>
+              <button class="pill-btn" onclick="setPrice(199.99)">$199.99</button>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Select US State</label>
+            <select id="salesTaxState"></select>
+          </div>
+
+          <div class="form-group">
+            <label>Discount / Sale Coupon (Optional)</label>
+            <div class="btn-grid-6">
+              <button class="disc-btn active" onclick="setDiscount(0)">0%</button>
+              <button class="disc-btn" onclick="setDiscount(10)">10%</button>
+              <button class="disc-btn" onclick="setDiscount(20)">20%</button>
+              <button class="disc-btn" onclick="setDiscount(25)">25%</button>
+              <button class="disc-btn" onclick="setDiscount(30)">30%</button>
+              <button class="disc-btn" onclick="setDiscount(50)">50%</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="card result-card">
+          <div class="result-header">
+            <span class="badge-title">Register Total</span>
+            <button class="copy-btn" id="copyTaxBtn">Copy</button>
+          </div>
+
+          <div class="headline-box">
+            <span class="headline-label">Final Amount at Checkout:</span>
+            <div class="headline-val" id="resTaxRegister">$0.00</div>
+          </div>
+
+          <div class="breakdown-list">
+            <div class="breakdown-row"><span>Original Price:</span><span id="resTaxOrig">$0.00</span></div>
+            <div class="breakdown-row" id="discRow"><span>Discount:</span><span id="resTaxDisc" class="deduct">-$0.00</span></div>
+            <div class="breakdown-row"><span>Sales Tax (<span id="resTaxRateLabel">0%</span>):</span><span id="resTaxTax" class="highlight">+$0.00</span></div>
+            <div class="breakdown-row total"><span>Total You Pay:</span><span id="resTaxFinal">$0.00</span></div>
+          </div>
+
+          <div class="info-note">
+            States with <strong>0% Sales Tax</strong>: Alaska, Delaware, Montana, New Hampshire, and Oregon.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. Gas Trip Calculator -->
+    <section id="tab-gas" class="tab-pane">
+      <div class="section-title">
+        <h1>US Road Trip & Gas Cost Splitter</h1>
+        <p>Calculate driving trip fuel costs and split fairly between passengers.</p>
+      </div>
+
+      <div class="calc-grid">
+        <div class="card form-card">
+          <div class="form-group">
+            <label>Trip Distance (Miles)</label>
+            <input type="number" id="gasMiles" value="180" min="1" />
+            <div class="pill-group">
+              <button class="pill-btn" onclick="setMiles(50)">50 mi</button>
+              <button class="pill-btn" onclick="setMiles(120)">120 mi</button>
+              <button class="pill-btn active" onclick="setMiles(180)">180 mi</button>
+              <button class="pill-btn" onclick="setMiles(300)">300 mi</button>
+              <button class="pill-btn" onclick="setMiles(500)">500 mi</button>
+            </div>
+          </div>
+
+          <div class="grid-2">
+            <div class="form-group">
+              <label>Vehicle MPG</label>
+              <input type="number" id="gasMPG" value="28" min="5" max="100" />
+              <small class="subtext">Average car: 28–32 MPG</small>
+            </div>
+
+            <div class="form-group">
+              <label>Gas Price ($/gal)</label>
+              <div class="input-prefix-wrapper">
+                <span class="prefix">$</span>
+                <input type="number" id="gasPrice" value="3.45" step="0.05" min="1" />
+              </div>
+              <small class="subtext">US national avg: ~$3.35</small>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Split Between: <strong id="gasSplitLabel">2 passengers</strong></label>
+            <div class="btn-grid-5">
+              <button class="gas-split-btn" onclick="setGasSplit(1)">1</button>
+              <button class="gas-split-btn active" onclick="setGasSplit(2)">2</button>
+              <button class="gas-split-btn" onclick="setGasSplit(3)">3</button>
+              <button class="gas-split-btn" onclick="setGasSplit(4)">4</button>
+              <button class="gas-split-btn" onclick="setGasSplit(5)">5</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="card result-card">
+          <div class="result-header">
+            <span class="badge-title">Fuel Breakdown</span>
+            <button class="copy-btn" id="copyGasBtn">Copy for Venmo</button>
+          </div>
+
+          <div class="headline-box">
+            <span class="headline-label" id="gasHeadlineLabel">Each Person Pays:</span>
+            <div class="headline-val" id="resGasEach">$0.00</div>
+          </div>
+
+          <div class="breakdown-list">
+            <div class="breakdown-row"><span>Total Distance:</span><span id="resGasDist">0 miles</span></div>
+            <div class="breakdown-row"><span>Gallons Needed:</span><span id="resGasGal">0 gal</span></div>
+            <div class="breakdown-row total"><span>Total Gas Cost:</span><span id="resGasTotal">$0.00</span></div>
+          </div>
+
+          <div class="info-note">
+            <strong>Eco Tip:</strong> Driving at 65 MPH instead of 75+ MPH improves fuel efficiency by up to 15%.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Bottom Tool Switcher -->
+    <div class="bottom-switcher">
+      <h4>All Everyday US Calculators</h4>
+      <div class="switcher-grid">
+        <button class="switch-card" onclick="switchTab('paycheck')">
+          <strong>💵 Paycheck</strong>
+          <span>Hourly & salary take-home pay</span>
+        </button>
+        <button class="switch-card" onclick="switchTab('tip')">
+          <strong>🍽️ Tip & Split</strong>
+          <span>Dining bills & Venmo shares</span>
+        </button>
+        <button class="switch-card" onclick="switchTab('salestax')">
+          <strong>🏷️ Sales Tax</strong>
+          <span>Final register price by US state</span>
+        </button>
+        <button class="switch-card" onclick="switchTab('gas')">
+          <strong>⛽ Gas Trip</strong>
+          <span>Road trip fuel costs & splits</span>
+        </button>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-container">
+      <div><strong>US QuickCalc</strong> · Simple Everyday US Calculators</div>
+      <div class="footer-links">
+        <button onclick="switchTab('paycheck')">Paycheck</button>
+        <button onclick="switchTab('tip')">Tip</button>
+        <button onclick="switchTab('salestax')">Sales Tax</button>
+        <button onclick="switchTab('gas')">Gas Trip</button>
+      </div>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
