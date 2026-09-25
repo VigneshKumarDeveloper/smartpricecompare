@@ -28,6 +28,9 @@ body {
   display: flex;
   flex-direction: column;
 }
+nav a{
+  margin:5px;
+}
 
 .container {
   width: 100%;
