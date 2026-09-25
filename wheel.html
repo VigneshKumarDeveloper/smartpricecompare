@@ -246,6 +246,7 @@
     function spinWheel() {
         if (names.length < 1) return;
         document.getElementById("spinBtn").disabled = true;
+		document.getElementById("spinBtn").style.background="#b3a2a2";
         document.getElementById("announcement").innerText = "🌀 Calculating result...";
         spinAngleStart = Math.random() * 10 + 10;
         spinTime = 0;
@@ -283,18 +284,21 @@
 		 document.getElementById("spinBtn").setAttribute("onclick", "resetAndReloadWheel()");
 		 document.getElementById("spinBtn").style.background = "#2e7d32";
 		 document.getElementById("spinBtn").disabled = false;
+		document.getElementById("spinBtn").style.background = "#2e7d32";
             } else {
                 document.getElementById("announcement").innerText = "❌ Eliminated: " + selected + "!";
                 arc = (2 * Math.PI) / names.length;
                 setTimeout(() => {
                     drawWheel();
                     document.getElementById("spinBtn").disabled = false;
+					document.getElementById("spinBtn").style.background = "#2e7d32";
                 }, 1500);
             }
         } else {
             // Picking Mode logic loops here
             document.getElementById("announcement").innerText = "🎯 Selected: " + selected + "!";
             document.getElementById("spinBtn").disabled = false;
+			document.getElementById("spinBtn").style.background = "#2e7d32";
         }
     }
 
