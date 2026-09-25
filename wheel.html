@@ -232,6 +232,7 @@
 
     function loadWheel() {
         const input = document.getElementById("namesInput").value;
+		localStorage.setItem('wheeldata', input);
         names = input.split('\n').map(name => name.trim()).filter(name => name.length > 0);
         
         if(names.length < 2) {
@@ -318,7 +319,15 @@
     
     loadWheel();
 }
+	window.onload = function() {
+    const savedData = localStorage.getItem('wheeldata');
+		if (savedData !== null){
+		names=savedData.split('\n').map(name => name.trim()).filter(name => name.length > 0);
+		}
+		else{
 	names=["Name 1","Name 2","Name 3"];
+		}
+	};
     arc = (2 * Math.PI) / names.length;
     drawWheel();
     document.getElementById("spinBtn").style.display = "block";
