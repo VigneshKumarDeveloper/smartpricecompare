@@ -254,13 +254,13 @@
     }
 
     function rotateWheel() {
-        spinTime += 30;
+        spinTime += 15;
         if(spinTime >= spinTimeTotal) {
             stopRotateWheel();
             return;
         }
         let spinAngle = spinAngleStart - easeOut(spinTime, 0, spinAngleStart, spinTimeTotal);
-        startAngle += (spinAngle * Math.PI / 180);
+        startAngle += (spinAngle * Math.PI / 90);
         drawWheel();
         spinTimeout = setTimeout(rotateWheel, 30);
     }
