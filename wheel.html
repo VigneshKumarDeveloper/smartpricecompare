@@ -315,7 +315,6 @@
     document.getElementById("spinBtn").innerHTML = "SPIN THE WHEEL";
     document.getElementById("spinBtn").setAttribute("onclick", "spinWheel()");
     document.getElementById("spinBtn").style.background = "#d32f2f";
-    
     loadWheel();
 }
 	window.onload = function() {
@@ -325,13 +324,13 @@
 		names=savedData.split('\n').map(name => name.trim()).filter(name => name.length > 0);
 		}
 		else{
-	names=["Option 1","Option 2","Option 3"];
+		names=["Option 1","Option 2","Option 3"];
+		document.getElementById("spinBtn").disabled = true;
+    	document.getElementById("spinBtn").style.background="#b3a2a2";
 		}
 		arc = (2 * Math.PI) / names.length;
     drawWheel();
     document.getElementById("spinBtn").style.display = "block";
-	document.getElementById("spinBtn").disabled = true;
-    document.getElementById("spinBtn").style.background="#b3a2a2";
 	};
     
 </script>
