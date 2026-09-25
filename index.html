@@ -113,8 +113,11 @@
             width: 100%;
             padding: 20px;
         }
+        footer a {
+            padding:10px;
+        }
         a{
-            margin: 10px 20px;
+            margin:5px;
         }
 
         h1 {
@@ -304,8 +307,8 @@
     </style>
 </head>
 <body>
-    <nav style="background: #ffffff;border-bottom: 1px solid #e2e8f0; padding: 10px 16px; display: flex; justify-content: center; gap: 15px; width: 100%; box-sizing: border-box;">
-    <a href="/index.html" style="background-color:#d4f5d8;padding:10px;border-radius:5px;color: #475569; font-weight: 700; text-decoration: none; font-size: 14px;">🛒 Price-Compare</a>
+    <nav style="background: #ffffff;border-bottom: 1px solid #e2e8f0; display: flex;align-items:center; justify-content: center; gap: 15px; width: 100%; box-sizing: border-box;">
+    <a href="/index.html" style="background-color:#d4f5d8;border-radius:5px;padding:5px;color: #475569; font-weight: 700; text-decoration: none; font-size: 14px;">🛒 Price-Compare</a>
     <span style="color: #cbd5e1;">|</span>
     <a href="/wheel.html" style="color: #475569; font-weight: 600; text-decoration: none; font-size: 14px;">🎮 Spin-Wheel</a>
     <span style="color: #cbd5e1;">|</span>
@@ -322,9 +325,9 @@
                     <h2>Pack / Item A</h2>
             		<div class="input-group">
                 		<div class="input-field"><label>Price (Any Currency)</label>
-                    	    <input type="number" id="priceA" placeholder="e.g. 150" inputmode="decimal" oninput="calculate()"></div>
+                    	    <input type="number" id="priceA" placeholder="e.g. 150" value="79.98" inputmode="decimal" oninput="calculate()"></div>
                 		<div class="input-field"><label>Size / Weight</label>
-                   		 <input type="number" id="sizeA" placeholder="e.g. 400" inputmode="decimal" oninput="calculate()"></div>
+                   		 <input type="number" id="sizeA" placeholder="e.g. 400" value="179" inputmode="decimal" oninput="calculate()"></div>
             		</div>
                     <div class="input-field">
                         <label>Unit Type</label>
@@ -346,11 +349,11 @@
                     <div class="input-group">
                         <div class="input-field">
                             <label>Price (Any Currency)</label>
-                            <input type="number" id="priceB" placeholder="e.g. 220" inputmode="decimal" oninput="calculate()">
+                            <input type="number" id="priceB" placeholder="e.g. 220" value="98.99" inputmode="decimal" oninput="calculate()">
                         </div>
                         <div class="input-field">
                             <label>Size / Weight</label>
-                            <input type="number" id="sizeB" placeholder="e.g. 650" inputmode="decimal" oninput="calculate()">
+                            <input type="number" id="sizeB" placeholder="e.g. 650" value="169.98" inputmode="decimal" oninput="calculate()">
                         </div>
                     </div>
                     <div class="input-field">
@@ -511,13 +514,13 @@
         if (priceA && sizeA && sizeA > 0) {
             // Standardize everything to a base of 100 units (e.g. per 100g, 100ml, 100 pieces)
             basePriceA = (priceA / (sizeA * unitA)) * 100;
-            document.getElementById('outputA').innerText = basePriceA.toFixed(4) + " per 100";
+            document.getElementById('outputA').innerText = basePriceA.toFixed(4) + " per 100gram";
         }
 
         // Process Item B if valid inputs exist
         if (priceB && sizeB && sizeB > 0) {
             basePriceB = (priceB / (sizeB * unitB)) * 100;
-            document.getElementById('outputB').innerText = basePriceB.toFixed(4) + " per 100";
+            document.getElementById('outputB').innerText = basePriceB.toFixed(4) + " per 100gram";
         }
 
         // Compare values if both items are fully entered
@@ -544,6 +547,7 @@
             document.getElementById('sizeB').value = '';
             calculate();
             }
+    calculate();
             </script>
 </body>
 </html>
