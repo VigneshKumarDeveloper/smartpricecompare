@@ -286,21 +286,20 @@
 		 document.getElementById("spinBtn").setAttribute("onclick", "resetAndReloadWheel()");
 		 document.getElementById("spinBtn").style.background = "#2e7d32";
 		 document.getElementById("spinBtn").disabled = false;
-		document.getElementById("spinBtn").style.background = "#2e7d32";
             } else {
                 document.getElementById("announcement").innerText = "❌ Eliminated: " + selected + "!";
                 arc = (2 * Math.PI) / names.length;
                 setTimeout(() => {
                     drawWheel();
                     document.getElementById("spinBtn").disabled = false;
-					document.getElementById("spinBtn").style.background = "#2e7d32";
+					document.getElementById("spinBtn").style.background = "#d32f2f";
                 }, 1500);
             }
         } else {
             // Picking Mode logic loops here
             document.getElementById("announcement").innerText = "🎯 Selected: " + selected + "!";
             document.getElementById("spinBtn").disabled = false;
-			document.getElementById("spinBtn").style.background = "#2e7d32";
+			document.getElementById("spinBtn").style.background = "#d32f2f";
         }
     }
 
