@@ -55,28 +55,6 @@ nav a{
   justify-content: space-between;
   height: 64px;
 }
-
-.logo {
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-  font-weight: 700;
-  font-size: 1.15rem;
-}
-
-.logo-icon {
-  width: 34px;
-  height: 34px;
-  background: var(--accent-light);
-  color: var(--accent);
-  border: 1px solid rgba(16, 185, 129, 0.3);
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 800;
-}
-
 .nav-tabs {
   display: flex;
   gap: 0.35rem;
