@@ -61,7 +61,7 @@
             min-width:350px;
             max-width: 450px;
             background: white;
-            padding:10px; 
+            padding:30px; 
             border-radius: 12px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.05);
             display: flex; 
@@ -70,7 +70,7 @@
 
         .game-box { 
              background: white;
-             padding:2px; 
+             padding:30px; 
              border-radius:12px;
              box-shadow: 0 4px 15px rgba(0,0,0,0.05);
              display:flex; 
@@ -119,13 +119,13 @@
 
         #spinBtn:hover { background: #c62828; }
 
-        .wheel-wrapper { position: relative; width: 340px; height: 340px; }
+        .wheel-wrapper { position: relative; width: 300px; height: 300px; }
 
          canvas{height: 300px;}
 
         .pointer { position: absolute; top: -10px; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 15px solid transparent; border-right: 15px solid transparent; border-top: 30px solid #d32f2f; z-index: 10; }
 
-        #announcement { font-size: 20px; font-weight: bold; color: #2e7d32; margin-top: 15px; min-height: 30px; }
+        #announcement { font-size: 20px; font-weight: bold; color: #2e7d32; margin-bottom:5px; min-height: 30px; }
         
         @media (min-width:900px) {
             .container { width:100%;flex-direction:row; flex-wrap:wrap;justify-content: center; }            
@@ -168,8 +168,8 @@
                 <div class="pointer"></div>
                 <canvas id="wheelCanvas" width="360" height="360"></canvas>
             </div>
-            <button id="spinBtn" onclick="spinWheel()">SPIN THE WHEEL</button>
-            <div id="announcement"></div>
+			<div id="announcement"></div>
+            <button id="spinBtn" onclick="spinWheel()">SPIN THE WHEEL</button> 
         </div>
         <div class="facts">
         <h2>The Ultimate Tool for Classrooms, Parties, and Daily Choices</h2>
