@@ -239,6 +239,8 @@
 
         arc = (2 * Math.PI) / names.length;
         document.getElementById("spinBtn").style.display = "block";
+		document.getElementById("spinBtn").disabled = false;
+        document.getElementById("spinBtn").style.background="#d32f2f";
         document.getElementById("announcement").innerText = "Roster locked. Click SPIN!";
         drawWheel();
     }
@@ -319,6 +321,8 @@
     arc = (2 * Math.PI) / names.length;
     drawWheel();
     document.getElementById("spinBtn").style.display = "block";
+	document.getElementById("spinBtn").disabled = true;
+    document.getElementById("spinBtn").style.background="#b3a2a2";
 </script>
 </body>
 </html>
