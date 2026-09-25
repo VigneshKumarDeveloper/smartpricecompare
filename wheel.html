@@ -232,12 +232,12 @@
 
     function loadWheel() {
         const input = document.getElementById("namesInput").value;
-        names = input.split('\n').map(name => name.trim()).filter(name => name.length > 0);
-        
-        if(names.length < 2) {
+		let okvalue=input.split('\n').map(name => name.trim()).filter(name => name.length > 0);
+        if(okvalue.length < 2) {
             alert("Please enter at least 2 entries!");
             return;
         }
+		names = okvalue;
 		localStorage.setItem('wheeldata', input);
         arc = (2 * Math.PI) / names.length;
         document.getElementById("spinBtn").style.display = "block";
