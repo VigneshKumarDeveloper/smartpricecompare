@@ -322,17 +322,19 @@
 	window.onload = function() {
     const savedData = localStorage.getItem('wheeldata');
 		if (savedData !== null){
+		document.getElementById("namesInput").value = savedData;
 		names=savedData.split('\n').map(name => name.trim()).filter(name => name.length > 0);
 		}
 		else{
 	names=["Name 1","Name 2","Name 3"];
 		}
-	};
-    arc = (2 * Math.PI) / names.length;
+		arc = (2 * Math.PI) / names.length;
     drawWheel();
     document.getElementById("spinBtn").style.display = "block";
 	document.getElementById("spinBtn").disabled = true;
     document.getElementById("spinBtn").style.background="#b3a2a2";
+	};
+    
 </script>
 </body>
 </html>
